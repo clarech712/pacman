@@ -5,11 +5,15 @@
 # Purpose: Store settings conveniently
 
 # Screen settings
-WIDTH, HEIGHT = 560, 620
+MAZE_WIDTH, MAZE_HEIGHT = 560, 620
 FPS = 60
+TOP_BOTTOM_BUFFER = 25
+WIDTH, HEIGHT = (MAZE_WIDTH + 2 * TOP_BOTTOM_BUFFER,
+    MAZE_HEIGHT + 2 * TOP_BOTTOM_BUFFER)
 
 # Colour settings
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 RED = (227, 2, 137)
 GREY = (128, 128, 128)
 
