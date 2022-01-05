@@ -25,6 +25,10 @@ class App:
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = "start" # Default state
+        self.cell_width = WIDTH // 28
+        self.cell_height = HEIGHT // 30
+        
+        self.load() # Load all images at once
         
     def run(self):
         while self.running:
@@ -54,6 +58,19 @@ class App:
             pos[0] = pos[0] - text_size[0] // 2 # Find x-position for centered
             pos[1] = pos[1] - text_size[1] // 2 # Find y-position for centered
         screen.blit(text, pos) # Display centered text
+        
+    def load(self):
+        self.background = pygame.image.load("maze.png")
+        self.background = pygame.transform.scale(self.background,
+            (WIDTH, HEIGHT)) # Scale background image to window
+            
+    def draw_grid(self):
+        for x in range(WIDTH // self.cell_width):
+            pygame.draw.line(self.screen, GREY, (x * self.cell_width, 0),
+                (x * self.cell_width, HEIGHT)) # Draw vertical lines
+        for x in range(HEIGHT // self.cell_height):
+            pygame.draw.line(self.screen, GREY, (0, x * self.cell_height),
+                (WIDTH, x * self.cell_height)) # Draw horizontal lines
     
     # START FUNCTIONS
     
@@ -91,6 +108,7 @@ class App:
         pass
         
     def playing_draw(self):
-        self.screen.fill(RED) # Set background colour
+        self.screen.blit(self.background, (0, 0)) # Set background
+        self.draw_grid() # Draw grid
         pygame.display.update()
 
