@@ -5,4 +5,5 @@ Planned upgrades:
 1. adjustable window size,
 2. custom logo and window name,
 3. start state music,
-4. multiple players.
+4. multiple players,
+5. multiple backgrounds.
