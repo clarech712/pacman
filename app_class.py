@@ -8,9 +8,10 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
-# Import pygame and sys libraries, import settings
+# Import pygame and sys libraries, import settings and Player class
 import pygame, sys
 from settings import *
+from player_class import *
 
 # Initialise game engine
 pygame.init()
@@ -27,6 +28,7 @@ class App:
         self.state = "start" # Default state
         self.cell_width = MAZE_WIDTH // 28 # Set cell width
         self.cell_height = MAZE_HEIGHT // 30 # Set cell height
+        self.player = Player(self, PLAYER_START_POS) # Introduce player
         
         self.load() # Load all images at once
         
@@ -116,5 +118,6 @@ class App:
             START_TEXT_SIZE, WHITE, START_FONT) # Display current score
         self.draw_text("HIGH  SCORE:  0", self.screen, [WIDTH // 2, 0],
             START_TEXT_SIZE, WHITE, START_FONT) # Display hight score
+        self.player.draw() # Draw player
         pygame.display.update()
 
