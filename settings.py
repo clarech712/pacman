@@ -26,6 +26,6 @@ START_TEXT_SIZE = 16
 START_FONT = "arial black"
 
 # Player settings
-PLAYER_START_POS = vec(1, 10) # Set grid starting position of player
+PLAYER_START_POS = vec(1, 1) # Set grid starting position of player
 
 # Mob settings
