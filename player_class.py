@@ -16,9 +16,19 @@ class Player:
         self.grid_pos = pos # Store position as grid coordinates
         self.pix_pos = self.get_pix_pos() # Store position as pixel coordinates
         self.direction = vec(1, 0) # Set direction as unit vector
+        self.stored_direction = None
     
     def update(self):
         self.pix_pos += self.direction # Update position on direction
+        # Wait until between lines and only then take turn
+        if int(self.pix_pos.x + TOP_BOTTOM_BUFFER) % self.app.cell_width == 0:
+            if self.direction == vec(1, 0) or self.direction == vec(-1, 0):
+                if self.stored_direction != None:
+                    self.direction = self.stored_direction
+        if int(self.pix_pos.y + TOP_BOTTOM_BUFFER) % self.app.cell_height == 0:
+            if self.direction == vec(0, 1) or self.direction == vec(0, -1):
+                if self.stored_direction != None:
+                    self.direction = self.stored_direction
         
         # Setting grid position in reference to pixel position
         self.grid_pos.x = ((self.pix_pos.x - 2 * TOP_BOTTOM_BUFFER
@@ -38,7 +48,7 @@ class Player:
             self.app.cell_width, self.app.cell_height), 1)
             
     def move(self, direction):
-        self.direction = direction
+        self.stored_direction = direction
         
     def get_pix_pos(self):
         return vec(
