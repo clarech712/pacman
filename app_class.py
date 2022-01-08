@@ -73,8 +73,8 @@ class App:
                 for xidx, char in enumerate(line):
                     if char == "1":
                         self.walls.append(vec(xidx, yidx))
-        print(self.walls)
             
+    # Helper function designed to visualise logic of game, for testing only
     def draw_grid(self):
         for x in range(WIDTH // self.cell_width):
             pygame.draw.line(self.background, GREY, (x * self.cell_width, 0),
@@ -82,6 +82,10 @@ class App:
         for x in range(HEIGHT // self.cell_height):
             pygame.draw.line(self.background, GREY, (0, x * self.cell_height),
                 (WIDTH, x * self.cell_height)) # Draw horizontal lines
+        for wall in self.walls:
+            pygame.draw.rect(self.background, (120, 60, 160),
+                (wall.x * self.cell_width, wall.y * self.cell_height,
+                self.cell_width, self.cell_height))
     
     # START FUNCTIONS
     
@@ -132,7 +136,7 @@ class App:
         self.screen.fill(BLACK) # Set general background
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER,
             TOP_BOTTOM_BUFFER)) # Set maze background
-        self.draw_grid() # Draw grid
+        # self.draw_grid() # Draw grid
         self.draw_text("CURRENT  SCORE:  0", self.screen, [TOP_BOTTOM_BUFFER, 0],
             START_TEXT_SIZE, WHITE, START_FONT) # Display current score
         self.draw_text("HIGH  SCORE:  0", self.screen, [WIDTH // 2, 0],
