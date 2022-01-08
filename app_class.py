@@ -29,6 +29,7 @@ class App:
         self.cell_width = MAZE_WIDTH // 28 # Set cell width
         self.cell_height = MAZE_HEIGHT // 30 # Set cell height
         self.player = Player(self, PLAYER_START_POS) # Introduce player
+        self.walls = []
         
         self.load() # Load all images at once
         
@@ -61,10 +62,18 @@ class App:
             pos[1] = pos[1] - text_size[1] // 2 # Find y-position for centered
         screen.blit(text, pos) # Display centered text
         
+    # This is the function I would eventually like adaptable to various maps
     def load(self):
         self.background = pygame.image.load("maze.png")
         self.background = pygame.transform.scale(self.background,
             (MAZE_WIDTH, MAZE_HEIGHT)) # Scale background image to window
+        # Open file with walls, create walls list with coordinates
+        with open("walls.txt", "r") as file:
+            for yidx, line in enumerate(file):
+                for xidx, char in enumerate(line):
+                    if char == "1":
+                        self.walls.append(vec(xidx, yidx))
+        print(self.walls)
             
     def draw_grid(self):
         for x in range(WIDTH // self.cell_width):
