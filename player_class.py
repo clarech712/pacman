@@ -17,13 +17,16 @@ class Player:
         self.pix_pos = self.get_pix_pos() # Store position as pixel coordinates
         self.direction = vec(1, 0) # Set direction as unit vector
         self.stored_direction = None
+        self.able_to_move = True
     
     def update(self):
-        self.pix_pos += self.direction # Update position on direction
+        if self.able_to_move: # If no wall in the way
+            self.pix_pos += self.direction # Update position on direction
         # Wait until between lines and only then take turn
         if self.time_to_move():
-                if self.stored_direction != None:
-                    self.direction = self.stored_direction
+            if self.stored_direction != None:
+                self.direction = self.stored_direction
+            self.able_to_move = self.can_move()
         
         # Setting grid position in reference to pixel position
         self.grid_pos.x = ((self.pix_pos.x - 2 * TOP_BOTTOM_BUFFER
@@ -37,10 +40,10 @@ class Player:
             self.app.cell_width // 2) # Draw player as circle
             
         # Drawing the grid position rectangle
-        pygame.draw.rect(self.app.screen, RED,
-            (self.grid_pos.x * self.app.cell_width + TOP_BOTTOM_BUFFER,
-            self.grid_pos.y * self.app.cell_height + TOP_BOTTOM_BUFFER,
-            self.app.cell_width, self.app.cell_height), 1)
+        # pygame.draw.rect(self.app.screen, RED,
+        #     (self.grid_pos.x * self.app.cell_width + TOP_BOTTOM_BUFFER,
+        #     self.grid_pos.y * self.app.cell_height + TOP_BOTTOM_BUFFER,
+        #     self.app.cell_width, self.app.cell_height), 1)
             
     def move(self, direction):
         self.stored_direction = direction
@@ -59,3 +62,9 @@ class Player:
         if int(self.pix_pos.y + TOP_BOTTOM_BUFFER) % self.app.cell_height == 0:
             if self.direction == vec(0, 1) or self.direction == vec(0, -1):
                 return True
+                
+    def can_move(self):
+        for wall in self.app.walls:
+            if vec(self.grid_pos + self.direction) == wall:
+                return False # If next move would result in wall, do not move
+        return True # If path clear, do move
