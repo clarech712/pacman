@@ -30,6 +30,7 @@ class App:
         self.cell_height = MAZE_HEIGHT // 30 # Set cell height
         self.player = Player(self, PLAYER_START_POS) # Introduce player
         self.walls = []
+        self.coins = []
         
         self.load() # Load all images at once
         
@@ -73,6 +74,8 @@ class App:
                 for xidx, char in enumerate(line):
                     if char == "1":
                         self.walls.append(vec(xidx, yidx))
+                    elif char == "C":
+                        self.coins.append(vec(xidx, yidx))
             
     # TESTING CODE
     def draw_grid(self):
@@ -82,11 +85,19 @@ class App:
         for x in range(HEIGHT // self.cell_height):
             pygame.draw.line(self.background, GREY, (0, x * self.cell_height),
                 (WIDTH, x * self.cell_height)) # Draw horizontal lines
-        for wall in self.walls:
-            pygame.draw.rect(self.background, (120, 60, 160),
-                (wall.x * self.cell_width, wall.y * self.cell_height,
-                self.cell_width, self.cell_height))
+        # for wall in self.walls:
+        #     pygame.draw.rect(self.background, (120, 60, 160),
+        #         (wall.x * self.cell_width, wall.y * self.cell_height,
+        #         self.cell_width, self.cell_height))
     # TESTING CODE
+    
+    def draw_coins(self):
+        for coin in self.coins:
+            pygame.draw.circle(self.screen, (120, 120, 10),
+                (int(coin.x * self.cell_width)
+                + self.cell_width // 2 + TOP_BOTTOM_BUFFER,
+                int(coin.y * self.cell_height)
+                + self.cell_height // 2 + TOP_BOTTOM_BUFFER), 5)
     
     # START FUNCTIONS
     
@@ -137,13 +148,16 @@ class App:
         self.screen.fill(BLACK) # Set general background
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER,
             TOP_BOTTOM_BUFFER)) # Set maze background
+        self.draw_coins() # Draw coins
         # TESTING CODE
-        # self.draw_grid() # Draw grid
+        self.draw_grid() # Draw grid
         # TESTING CODE
-        self.draw_text("CURRENT  SCORE:  0", self.screen, [TOP_BOTTOM_BUFFER, 0],
-            START_TEXT_SIZE, WHITE, START_FONT) # Display current score
-        self.draw_text("HIGH  SCORE:  0", self.screen, [WIDTH // 2, 0],
-            START_TEXT_SIZE, WHITE, START_FONT) # Display hight score
+        # Display current score
+        self.draw_text("CURRENT  SCORE:  0", self.screen,
+            [TOP_BOTTOM_BUFFER + 10, 0], START_TEXT_SIZE, WHITE, START_FONT)
+        # Display hight score
+        self.draw_text("HIGH  SCORE:  0", self.screen,
+            [WIDTH // 2 + 10, 0], START_TEXT_SIZE, WHITE, START_FONT)
         self.player.draw() # Draw player
         pygame.display.update()
 
