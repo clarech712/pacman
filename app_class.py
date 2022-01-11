@@ -153,8 +153,9 @@ class App:
         self.draw_grid() # Draw grid
         # TESTING CODE
         # Display current score
-        self.draw_text("CURRENT  SCORE:  0", self.screen,
-            [TOP_BOTTOM_BUFFER + 10, 0], START_TEXT_SIZE, WHITE, START_FONT)
+        self.draw_text("CURRENT  SCORE:  {}".format(self.player.current_score),
+            self.screen, [TOP_BOTTOM_BUFFER + 10, 0], START_TEXT_SIZE, WHITE,
+            START_FONT)
         # Display hight score
         self.draw_text("HIGH  SCORE:  0", self.screen,
             [WIDTH // 2 + 10, 0], START_TEXT_SIZE, WHITE, START_FONT)
