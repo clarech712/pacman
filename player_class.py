@@ -51,8 +51,8 @@ class Player:
         # TESTING CODE
         
     def on_coin(self):
-        if self.grid_pos in self.app.coins:
-            return True # Return true if coin at player's grid position
+        if self.grid_pos in self.app.coins and self.time_to_move():
+            return True
         else:
             return False
             

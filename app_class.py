@@ -28,11 +28,13 @@ class App:
         self.state = "start" # Default state
         self.cell_width = MAZE_WIDTH // 28 # Set cell width
         self.cell_height = MAZE_HEIGHT // 30 # Set cell height
-        self.player = Player(self, PLAYER_START_POS) # Introduce player
         self.walls = []
         self.coins = []
+        self.p_pos = None
         
         self.load() # Load all images at once
+        
+        self.player = Player(self, self.p_pos) # Introduce player
         
     def run(self):
         while self.running:
@@ -68,14 +70,16 @@ class App:
         self.background = pygame.image.load("maze.png")
         self.background = pygame.transform.scale(self.background,
             (MAZE_WIDTH, MAZE_HEIGHT)) # Scale background image to window
-        # Open file with walls, create walls list with coordinates
+        # Open file with walls
         with open("walls.txt", "r") as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
-                    if char == "1":
+                    if char == "1": # Create list with wall coordinates
                         self.walls.append(vec(xidx, yidx))
-                    elif char == "C":
+                    elif char == "C": # Create list with coin coordinates
                         self.coins.append(vec(xidx, yidx))
+                    elif char == "P": # Set position of player
+                        self.p_pos = vec(xidx, yidx)
             
     # TESTING CODE
     def draw_grid(self):
