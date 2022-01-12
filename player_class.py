@@ -1,6 +1,6 @@
 # Pac-Man
 #
-# Name: app_file.py
+# Name: player_class.py
 # Modified by: clarech712
 # Purpose: Implement Player class
 
