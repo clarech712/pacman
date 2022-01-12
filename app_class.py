@@ -1,6 +1,6 @@
 # Pac-Man
 #
-# Name: app_file.py
+# Name: app_class.py
 # Modified by: clarech712
 # Purpose: Implement App class
 
@@ -12,6 +12,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame, sys
 from settings import *
 from player_class import *
+from enemy_class import *
 
 # Initialise game engine
 pygame.init()
@@ -28,13 +29,16 @@ class App:
         self.state = "start" # Default state
         self.cell_width = MAZE_WIDTH // 28 # Set cell width
         self.cell_height = MAZE_HEIGHT // 30 # Set cell height
-        self.walls = []
-        self.coins = []
-        self.p_pos = None
+        self.walls = [] # Empty list for wall grid positions
+        self.coins = [] # Empty list for coin grid positions
+        self.enemies = [] # Empty list for enemies
+        self.p_pos = None # Declare position of player
+        self.e_pos = [] # Empty list for enemy positions
         
         self.load() # Load all images at once
         
         self.player = Player(self, self.p_pos) # Introduce player
+        self.make_enemies() # Introduce enemies
         
     def run(self):
         while self.running:
@@ -65,7 +69,7 @@ class App:
             pos[1] = pos[1] - text_size[1] // 2 # Find y-position for centered
         screen.blit(text, pos) # Display centered text
         
-    # This is the function I would eventually like adaptable to various maps
+    # This I would eventually like adaptable to various maps
     def load(self):
         self.background = pygame.image.load("maze.png")
         self.background = pygame.transform.scale(self.background,
@@ -80,7 +84,13 @@ class App:
                         self.coins.append(vec(xidx, yidx))
                     elif char == "P": # Set position of player
                         self.p_pos = vec(xidx, yidx)
+                    elif char in ["2", "3", "4", "5"]:
+                        self.e_pos.append(vec(xidx, yidx))
             
+    def make_enemies(self):
+        for pos in self.e_pos:
+            self.enemies.append(Enemy(self, pos)) # Create enemies at positions
+    
     # TESTING CODE
     def draw_grid(self):
         for x in range(WIDTH // self.cell_width):
@@ -147,6 +157,8 @@ class App:
     
     def playing_update(self):
         self.player.update()
+        for enemy in self.enemies:
+            enemy.update()
         
     def playing_draw(self):
         self.screen.fill(BLACK) # Set general background
@@ -164,5 +176,7 @@ class App:
         self.draw_text("HIGH  SCORE:  0", self.screen,
             [WIDTH // 2 + 10, 0], START_TEXT_SIZE, WHITE, START_FONT)
         self.player.draw() # Draw player
+        for enemy in self.enemies:
+            enemy.draw() # Draw each enemy
         pygame.display.update()
 
