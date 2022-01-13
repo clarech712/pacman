@@ -19,10 +19,11 @@ class Player:
         self.stored_direction = None
         self.able_to_move = True
         self.current_score = 0
+        self.speed = 1 # Set speed
     
     def update(self):
-        if self.able_to_move: # If no wall in the way
-            self.pix_pos += self.direction # Update position on direction
+        if self.able_to_move: # If no wall in the way, update position
+            self.pix_pos += self.direction * self.speed # accounting for speed
         # Wait until between lines and only then take turn
         if self.time_to_move():
             if self.stored_direction != None:
