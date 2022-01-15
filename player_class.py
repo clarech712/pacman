@@ -79,6 +79,7 @@ class Player:
             % self.app.cell_height == 0):
             if self.direction == vec(0, 1) or self.direction == vec(0, -1):
                 return True
+        return False
                 
     def can_move(self):
         for wall in self.app.walls:
